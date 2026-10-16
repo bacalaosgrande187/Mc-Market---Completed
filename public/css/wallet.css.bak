@@ -1,0 +1,575 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+body {
+font-family: Arial, Helvetica, sans-serif;
+background: #0b0d10;
+color: #ffffff;
+min-height: 100vh;
+}
+
+/* =========================
+MAIN CONTAINER
+========================= */
+
+.wallet-container {
+width: 100%;
+max-width: 1200px;
+margin: auto;
+padding: 30px;
+}
+
+/* =========================
+HEADER
+========================= */
+
+.wallet-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+
+margin-bottom: 35px;
+
+padding: 25px;
+
+background: #11151a;
+border: 1px solid #20262d;
+border-radius: 14px;
+
+
+}
+
+.wallet-header h1 {
+font-size: 32px;
+margin-bottom: 6px;
+}
+
+.wallet-header p {
+color: #7d8792;
+font-size: 14px;
+}
+
+/* =========================
+LOGOUT
+========================= */
+
+.logout-btn {
+border: 1px solid #333b44;
+background: #171c21;
+color: #ffffff;
+
+
+padding: 11px 20px;
+
+border-radius: 8px;
+
+cursor: pointer;
+
+transition: 0.2s;
+
+
+}
+
+.logout-btn:hover {
+background: #222930;
+}
+
+/* =========================
+WALLET CARD
+========================= */
+
+.wallet-card {
+background: #11151a;
+
+
+border: 1px solid #20262d;
+
+border-radius: 14px;
+
+overflow: hidden;
+
+
+}
+
+/* =========================
+CRYPTO ROW
+========================= */
+
+.crypto-row {
+display: grid;
+
+
+grid-template-columns:
+    minmax(200px, 1fr)
+    180px
+    220px;
+
+align-items: center;
+
+gap: 20px;
+
+padding: 22px 25px;
+
+border-bottom: 1px solid #20262d;
+
+transition: background 0.2s;
+
+
+}
+
+.crypto-row:last-child {
+border-bottom: none;
+}
+
+.crypto-row:hover {
+background: #151a1f;
+}
+
+/* =========================
+CRYPTO INFO
+========================= */
+
+.crypto-info {
+display: flex;
+align-items: center;
+
+
+gap: 15px;
+
+
+}
+
+.crypto-info h2 {
+font-size: 17px;
+
+
+margin-bottom: 4px;
+
+
+}
+
+.crypto-info span {
+color: #737d87;
+
+
+font-size: 13px;
+
+
+}
+
+/* =========================
+ICON
+========================= */
+
+.crypto-icon {
+width: 45px;
+height: 45px;
+
+
+display: flex;
+
+align-items: center;
+justify-content: center;
+
+border-radius: 50%;
+
+font-size: 23px;
+font-weight: bold;
+
+background: #1c2228;
+
+border: 1px solid #303841;
+
+
+}
+
+/* =========================
+BALANCE
+========================= */
+
+.balance {
+text-align: right;
+}
+
+.balance strong {
+display: block;
+
+
+font-size: 16px;
+
+margin-bottom: 4px;
+
+
+}
+
+.balance span {
+color: #737d87;
+
+
+font-size: 12px;
+
+
+}
+
+/* =========================
+ACTION BUTTONS
+========================= */
+
+.actions {
+display: flex;
+
+
+justify-content: flex-end;
+
+gap: 10px;
+
+
+}
+
+.actions button {
+padding: 10px 17px;
+
+
+border-radius: 7px;
+
+border: 1px solid #303841;
+
+background: #191f25;
+
+color: #ffffff;
+
+cursor: pointer;
+
+font-size: 13px;
+
+transition: 0.2s;
+
+
+}
+
+.actions button:hover {
+background: #272f37;
+
+
+border-color: #4a555f;
+
+
+}
+
+/* =========================
+MODAL
+========================= */
+
+.modal {
+display: none;
+
+
+position: fixed;
+
+inset: 0;
+
+background: rgba(0, 0, 0, 0.75);
+
+align-items: center;
+
+justify-content: center;
+
+padding: 20px;
+
+z-index: 1000;
+
+
+}
+
+.modal-content {
+position: relative;
+
+
+width: 100%;
+max-width: 440px;
+
+background: #11151a;
+
+border: 1px solid #2a323a;
+
+border-radius: 14px;
+
+padding: 30px;
+
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+
+}
+
+.modal-content h2 {
+margin-bottom: 25px;
+
+
+font-size: 22px;
+
+
+}
+
+/* =========================
+CLOSE
+========================= */
+
+.close {
+position: absolute;
+
+
+right: 15px;
+top: 12px;
+
+border: none;
+
+background: transparent;
+
+color: #8b949e;
+
+font-size: 28px;
+
+cursor: pointer;
+
+
+}
+
+.close:hover {
+color: #ffffff;
+}
+
+/* =========================
+QR CODE
+========================= */
+
+#qrcode {
+display: flex;
+
+
+justify-content: center;
+align-items: center;
+
+min-height: 220px;
+
+margin-bottom: 25px;
+
+
+}
+
+#qrcode img,
+#qrcode canvas {
+padding: 10px;
+
+
+background: #ffffff;
+
+border-radius: 8px;
+
+
+}
+
+/* =========================
+ADDRESS
+========================= */
+
+.address-box {
+display: flex;
+
+
+gap: 8px;
+
+}
+
+.address-box input {
+flex: 1;
+
+
+min-width: 0;
+
+padding: 12px;
+
+border-radius: 7px;
+
+border: 1px solid #303841;
+
+background: #0b0d10;
+
+color: #ffffff;
+
+font-size: 12px;
+
+
+}
+
+.address-box button {
+padding: 0 15px;
+
+
+border: 1px solid #303841;
+
+border-radius: 7px;
+
+background: #191f25;
+
+color: #ffffff;
+
+cursor: pointer;
+
+
+}
+
+.address-box button:hover {
+background: #272f37;
+}
+
+/* =========================
+SEND FORM
+========================= */
+
+#sendForm {
+display: flex;
+
+flex-direction: column;
+
+gap: 10px;
+
+
+}
+
+#sendForm label {
+margin-top: 8px;
+
+color: #9ba4ad;
+
+font-size: 13px;
+
+
+}
+
+#sendForm input {
+padding: 13px;
+
+border-radius: 7px;
+
+border: 1px solid #303841;
+
+background: #0b0d10;
+
+color: #ffffff;
+
+outline: none;
+
+
+}
+
+#sendForm input:focus {
+border-color: #596570;
+}
+
+.send-confirm {
+margin-top: 15px;
+
+
+padding: 13px;
+
+border-radius: 7px;
+
+border: 1px solid #303841;
+
+background: #20272e;
+
+color: #ffffff;
+
+cursor: pointer;
+
+font-size: 14px;
+
+font-weight: bold;
+
+transition: 0.2s;
+
+
+}
+
+.send-confirm:hover {
+background: #2c353e;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+
+.wallet-container {
+    padding: 15px;
+}
+
+.wallet-header {
+    padding: 20px;
+
+    margin-bottom: 20px;
+}
+
+.wallet-header h1 {
+    font-size: 25px;
+}
+
+.crypto-row {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+
+    padding: 20px;
+}
+
+.balance {
+    text-align: left;
+}
+
+.actions {
+    justify-content: flex-start;
+}
+
+.actions button {
+    flex: 1;
+}
+
+
+}
+
+/* =========================
+SMALL MOBILE
+========================= */
+
+@media (max-width: 450px) {
+
+
+.wallet-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 15px;
+}
+
+.logout-btn {
+    width: 100%;
+}
+
+.actions {
+    width: 100%;
+}
+
+.address-box {
+    flex-direction: column;
+}
+
+.address-box button {
+    padding: 12px;
+}}

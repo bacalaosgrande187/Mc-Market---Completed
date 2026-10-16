@@ -1,0 +1,252 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0a0a0a;
+    color: #ffffff;
+}
+
+/* =========================
+   AUTH LAYOUT
+========================= */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+    padding: 42px;
+    background: #111111;
+    border: 1px solid #242424;
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+}
+
+.auth-card h1 {
+    margin: 0;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    margin: 10px 0 32px;
+    text-align: center;
+    color: #858585;
+    font-size: 14px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.input-group {
+    margin-bottom: 19px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #d0d0d0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+
+    border: 1px solid #303030;
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #181818;
+    color: #ffffff;
+
+    font-size: 14px;
+
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.input-group input::placeholder {
+    color: #606060;
+}
+
+.input-group input:focus {
+    border-color: #777777;
+    background: #1b1b1b;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.auth-button {
+    width: 100%;
+    height: 48px;
+
+    margin-top: 8px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #000000;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.auth-button:hover {
+    background: #dddddd;
+    transform: translateY(-1px);
+}
+
+.auth-button:active {
+    transform: translateY(0);
+}
+
+/* =========================
+   SWITCH LOGIN / REGISTER
+========================= */
+
+.switch-auth {
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: #777777;
+    font-size: 13px;
+}
+
+.switch-auth a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.switch-auth a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+#message {
+    min-height: 18px;
+    margin: 14px 0 0;
+
+    text-align: center;
+
+    color: #999999;
+    font-size: 13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+    .auth-card {
+        padding: 30px 22px;
+    }
+
+    .auth-card h1 {
+        font-size: 28px;
+    }
+}
+/* =========================
+   HOMEPAGE
+========================= */
+
+.home-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.home-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 50px 40px;
+    text-align: center;
+
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 20px;
+
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+}
+
+.home-card h1 {
+    margin: 0 0 12px;
+    font-size: 42px;
+    font-weight: 700;
+}
+
+.home-card p {
+    margin: 0 0 35px;
+    color: #999;
+    font-size: 16px;
+}
+
+.home-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.home-button {
+    display: block;
+    padding: 15px;
+    border-radius: 10px;
+
+    background: white;
+    color: black;
+
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+
+    transition: 0.2s;
+}
+
+.home-button:hover {
+    transform: translateY(-2px);
+    background: #ddd;
+}
+
+.home-button.secondary {
+    background: #1c1c1c;
+    color: white;
+    border: 1px solid #333;
+}
+
+.home-button.secondary:hover {
+    background: #292929;
+}

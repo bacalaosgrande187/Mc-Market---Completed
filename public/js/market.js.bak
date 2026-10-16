@@ -1,0 +1,341 @@
+/*
+ * public/js/market.js
+ *
+ * Boutique Mc Market côté client.
+ * - Charge les articles en vente
+ * - Affiche les balances du wallet
+ * - Achat avec les fonds du wallet (paiement on-chain)
+ */
+
+let currentUser = null;
+let products = [];
+
+const NETWORK_LABELS = {
+    ethereum: "Ethereum (ETH)",
+    polygon: "Polygon (POL)",
+    solana: "Solana (SOL)",
+    tron: "Tron (TRX)"
+};
+
+const CURRENCY_TO_NETWORK = {
+    ETH: "ethereum",
+    POL: "polygon",
+    SOL: "solana",
+    TRX: "tron"
+};
+
+// ======================================================
+// INITIALISATION
+// ======================================================
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    currentUser =
+        JSON.parse(
+            localStorage.getItem("user") || "null"
+        );
+
+    if (!currentUser || !currentUser.id) {
+        window.location.href = "/login.html";
+        return;
+    }
+
+    if (currentUser.role === "admin") {
+        document.getElementById("adminLink").style.display = "";
+    }
+
+    setupLogout();
+
+    await Promise.all([
+        loadProducts(),
+        loadBalances()
+    ]);
+});
+
+// ======================================================
+// DECONNEXION
+// ======================================================
+
+function setupLogout() {
+
+    const btn = document.getElementById("logoutBtn");
+
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+        localStorage.removeItem("user");
+        window.location.href = "/login.html";
+    });
+}
+
+// ======================================================
+// ARTICLES EN VENTE
+// ======================================================
+
+async function loadProducts() {
+
+    const grid =
+        document.getElementById("productsGrid");
+
+    try {
+
+        const response =
+            await fetch("/api/products");
+
+        const data = await response.json();
+
+        products = data.products || [];
+
+        if (products.length === 0) {
+            grid.innerHTML =
+                "<span>Aucun article en vente pour le moment.</span>";
+            return;
+        }
+
+        grid.innerHTML = "";
+
+        for (const product of products) {
+            grid.appendChild(
+                createProductCard(product)
+            );
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        grid.innerHTML =
+            "<span>Impossible de charger les articles.</span>";
+    }
+}
+
+function createProductCard(product) {
+
+    const card = document.createElement("div");
+    card.className = "product-card mc-panel";
+
+    const outOfStock =
+        Number(product.stock) <= 0;
+
+    card.innerHTML = `
+        <h3></h3>
+        <p class="desc"></p>
+        <div class="product-price">
+            ${product.price} <small>${product.currency}</small>
+        </div>
+        <div class="product-stock ${outOfStock ? "out" : ""}">
+            ${outOfStock
+                ? "Rupture de stock"
+                : "Stock : " + product.stock}
+        </div>
+        <button class="buy-button" ${outOfStock ? "disabled" : ""}>
+            Acheter
+        </button>
+    `;
+
+    card.querySelector("h3").textContent = product.name;
+    card.querySelector(".desc").textContent =
+        product.description || "";
+
+    card.querySelector(".buy-button").addEventListener(
+        "click",
+        () => openBuyModal(product)
+    );
+
+    return card;
+}
+
+// ======================================================
+// BALANCES DU WALLET
+// ======================================================
+
+async function loadBalances() {
+
+    const strip =
+        document.getElementById("walletStrip");
+
+    try {
+
+        const response = await fetch(
+            `/api/users/${currentUser.id}/balances`
+        );
+
+        const data = await response.json();
+
+        const balances = data.balances || {};
+
+        const entries = Object.entries(balances);
+
+        if (entries.length === 0) {
+
+            strip.innerHTML =
+                "<span class='balance-chip'>" +
+                "Balances indisponibles (RPC non configuré)." +
+                "</span>";
+
+            return;
+        }
+
+        strip.innerHTML = "";
+
+        for (const [network, info] of entries) {
+
+            const chip = document.createElement("span");
+            chip.className = "balance-chip";
+
+            chip.textContent = NETWORK_LABELS[network] || network;
+
+            const bold = document.createElement("b");
+            bold.textContent =
+                Number(info.balance).toFixed(6) + " " + info.symbol;
+
+            chip.appendChild(bold);
+
+            strip.appendChild(chip);
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        strip.innerHTML =
+            "<span class='balance-chip'>Balances indisponibles.</span>";
+    }
+}
+
+// ======================================================
+// MODALE D'ACHAT
+// ======================================================
+
+let currentProduct = null;
+
+function openBuyModal(product) {
+
+    currentProduct = product;
+
+    document.getElementById("buyProductName").textContent =
+        product.name + " — " + product.price + " " + product.currency;
+
+    document.getElementById("buyQuantity").value = 1;
+    document.getElementById("buyMessage").textContent = "";
+
+    /*
+     * Le paiement se fait dans la devise du produit.
+     */
+    const select = document.getElementById("buyNetwork");
+    const network = CURRENCY_TO_NETWORK[product.currency];
+
+    select.innerHTML = "";
+
+    const option = document.createElement("option");
+    option.value = network;
+    option.textContent = NETWORK_LABELS[network] || product.currency;
+
+    select.appendChild(option);
+
+    updateBuyTotal();
+
+    document.getElementById("buyQuantity")
+        .addEventListener("input", updateBuyTotal);
+
+    document.getElementById("buyModal").classList.add("open");
+}
+
+function updateBuyTotal() {
+
+    if (!currentProduct) return;
+
+    const qty =
+        Math.max(
+            1,
+            Number(document.getElementById("buyQuantity").value) || 1
+        );
+
+    const total = qty * Number(currentProduct.price);
+
+    document.getElementById("buyTotal").textContent =
+        total + " " + currentProduct.currency;
+}
+
+function closeBuyModal() {
+    document.getElementById("buyModal").classList.remove("open");
+    currentProduct = null;
+}
+
+// ======================================================
+// ACHAT (paiement depuis le wallet)
+// ======================================================
+
+async function confirmPurchase() {
+
+    if (!currentProduct) return;
+
+    const message =
+        document.getElementById("buyMessage");
+
+    const qty =
+        Math.max(
+            1,
+            Number(document.getElementById("buyQuantity").value) || 1
+        );
+
+    const network =
+        document.getElementById("buyNetwork").value;
+
+    /*
+     * Le paiement on-chain exige la confirmation
+     * par mot de passe (comme pour un Send).
+     */
+    const password = prompt(
+        "Confirmez votre mot de passe pour signer le paiement :"
+    );
+
+    if (!password) return;
+
+    message.className = "mc-message";
+    message.textContent = "Transaction en cours...";
+
+    try {
+
+        const response = await fetch("/api/purchase", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                password: password,
+                productId: currentProduct.id,
+                quantity: qty,
+                network: network
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            message.className = "mc-message err";
+            message.textContent = data.message || "Achat impossible.";
+            return;
+        }
+
+        message.className = "mc-message ok";
+        message.textContent =
+            "Achat confirmé ! Tx : " + data.order.tx_hash;
+
+        await Promise.all([
+            loadProducts(),
+            loadBalances()
+        ]);
+
+        setTimeout(closeBuyModal, 2500);
+
+    } catch (error) {
+
+        console.error(error);
+
+        message.className = "mc-message err";
+        message.textContent =
+            "Impossible de contacter le serveur.";
+    }
+}

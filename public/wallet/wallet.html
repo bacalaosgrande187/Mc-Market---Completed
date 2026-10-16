@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Wallet - Mc Market</title>
+
+<link
+    rel="icon"
+    type="image/png"
+    href="/images/mc-market-logo.png"
+>
+
+<link
+    rel="stylesheet"
+    href="/css/wallet.css"
+>
+
+</head>
+
+<body>
+
+<div class="wallet-container">
+
+<!-- HEADER -->
+
+<header class="wallet-header">
+
+    <div>
+
+        <h1>Portfolio</h1>
+
+        <p id="username">
+            Loading...
+        </p>
+
+    </div>
+
+
+    <div style="display:flex; gap:10px; align-items:center;">
+
+        <a
+            href="/market.html"
+            class="logout-btn"
+            style="text-decoration:none; display:inline-block;"
+        >
+            Boutique
+        </a>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Déconnexion
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<main>
+
+    <div class="wallet-card">
+
+
+        <!-- ================================================= -->
+        <!-- BTC -->
+        <!-- ================================================= -->
+
+        <div class="crypto-row">
+
+            <div class="crypto-info">
+
+                <div class="crypto-icon btc">
+                    ₿
+                </div>
+
+                <div>
+
+                    <h2>Bitcoin</h2>
+
+                    <span>BTC</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="balance">
+
+                <strong id="btc-balance">
+                    0.00000000
+                </strong>
+
+                <span>BTC</span>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    onclick="openReceive('BTC')"
+                >
+                    Receive
+                </button>
+
+                <button
+                    onclick="openSend('BTC')"
+                >
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- ETH -->
+        <!-- ================================================= -->
+
+        <div class="crypto-row">
+
+            <div class="crypto-info">
+
+                <div class="crypto-icon eth">
+                    Ξ
+                </div>
+
+                <div>
+
+                    <h2>Ethereum</h2>
+
+                    <span>ETH</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="balance">
+
+                <strong id="eth-balance">
+                    0.00000000
+                </strong>
+
+                <span>ETH</span>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    onclick="openReceive('ETH')"
+                >
+                    Receive
+                </button>
+
+                <button
+                    onclick="openSend('ETH')"
+                >
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+</div>
+
+<!-- ================================================= -->
+
+<!-- RECEIVE MODAL -->
+
+<!-- ================================================= -->
+
+<div
+    id="receiveModal"
+    class="modal"
+>
+
+<div class="modal-content">
+
+    <button
+        class="close"
+        onclick="closeReceive()"
+    >
+        ×
+    </button>
+
+
+    <h2>
+        Receive
+        <span id="receiveCoin"></span>
+    </h2>
+
+
+    <div id="qrcode"></div>
+
+
+    <div class="address-box">
+
+        <input
+            type="text"
+            id="receiveAddress"
+            readonly
+        >
+
+
+        <button
+            onclick="copyAddress()"
+        >
+            Copy
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- ================================================= -->
+
+<!-- SEND MODAL -->
+
+<!-- ================================================= -->
+
+<div
+    id="sendModal"
+    class="modal"
+>
+
+<div class="modal-content">
+
+    <button
+        class="close"
+        onclick="closeSend()"
+    >
+        ×
+    </button>
+
+
+    <h2>
+        Send
+        <span id="sendCoin"></span>
+    </h2>
+
+
+    <form id="sendForm">
+
+
+        <label>
+            Destination address
+        </label>
+
+
+        <input
+            type="text"
+            id="destinationAddress"
+            placeholder="Enter destination address"
+            required
+        >
+
+
+        <label>
+            Amount
+        </label>
+
+
+        <input
+            type="number"
+            id="sendAmount"
+            placeholder="0.00000000"
+            step="any"
+            min="0"
+            required
+        >
+
+
+        <div class="tax-notice">
+
+            <span>
+                Réseau : taxe de 15% appliquée à chaque envoi.
+                Le destinataire reçoit 85% du montant.
+            </span>
+
+            <span class="tax-preview">
+                Le destinataire reçoit :
+                <strong id="sendNetAmount">0.00000000</strong>
+            </span>
+
+        </div>
+
+
+        <label>
+            Password (signature)
+        </label>
+
+
+        <input
+            type="password"
+            id="sendPassword"
+            placeholder="Confirmez votre mot de passe"
+            autocomplete="current-password"
+        >
+
+
+        <button
+            type="submit"
+            class="send-confirm"
+        >
+            Send
+        </button>
+
+
+    </form>
+
+</div>
+
+
+</div>
+
+<!-- ================================================= -->
+
+<!-- SCRIPTS -->
+
+<!-- ================================================= -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+></script>
+
+<script src="/js/matrix.js"></script>
+
+<script
+    src="/js/walletserver.js"
+></script>
+
+</body>
+
+</html>

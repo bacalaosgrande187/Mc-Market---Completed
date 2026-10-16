@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin - Mc Market</title>
+
+    <link rel="icon" type="image/png" href="/images/mc-market-logo.png">
+    <link rel="stylesheet" href="/css/market.css">
+</head>
+
+<body>
+
+    <header class="mc-header">
+
+        <div class="mc-header-brand">
+
+            <img
+                class="mc-header-logo"
+                src="/images/mc-market-logo.png"
+                alt="Mc Market"
+            >
+
+            <h1 class="mc-header-title">MC <span>ADMIN</span></h1>
+
+        </div>
+
+        <nav class="mc-nav">
+
+            <a href="/market.html">Boutique</a>
+            <a href="/admin.html" class="active">Admin</a>
+            <a href="#" id="logoutBtn">Déconnexion</a>
+
+        </nav>
+
+    </header>
+
+    <!-- ================================================= -->
+    <!-- VERROU ADMIN : DEMANDE LE MOT DE PASSE             -->
+    <!-- ================================================= -->
+
+    <main class="market-main" id="lockScreen" style="max-width:520px; margin-top:60px;">
+
+        <div class="mc-panel" style="padding:30px; text-align:center;">
+
+            <h2 style="color:var(--mc-gold); margin-top:0;">
+                Accès administrateur
+            </h2>
+
+            <p style="color:#9fe8ae; font-size:14px;">
+                Entrez votre mot de passe admin pour déverrouiller
+                la gestion des articles.
+            </p>
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Mot de passe admin"
+                style="width:100%; height:46px; padding:0 14px; margin-bottom:14px;
+                       border:1px solid var(--mc-border); border-radius:9px;
+                       background:rgba(2,14,6,0.9); color:#fff; outline:none;"
+            >
+
+            <button class="mc-button gold" style="width:100%;" onclick="unlockAdmin()">
+                Déverrouiller
+            </button>
+
+            <p id="lockMessage" class="mc-message"></p>
+
+        </div>
+
+    </main>
+
+    <!-- ================================================= -->
+    <!-- PANNEAU ADMIN                                     -->
+    <!-- ================================================= -->
+
+    <main class="admin-main" id="adminPanel" style="display:none;">
+
+        <!-- AJOUT / MODIFICATION D'ARTICLE -->
+
+        <section class="admin-section mc-panel">
+
+            <h2 id="formTitle">Ajouter un article</h2>
+
+            <form class="admin-form" id="productForm" onsubmit="saveProduct(event)">
+
+                <div>
+                    <label>Nom</label>
+                    <input type="text" id="pName" required maxlength="80">
+                </div>
+
+                <div>
+                    <label>Prix</label>
+                    <input type="number" id="pPrice" step="any" min="0" required>
+                </div>
+
+                <div>
+                    <label>Devise</label>
+                    <select id="pCurrency">
+                        <option value="ETH">ETH (Ethereum)</option>
+                        <option value="BTC">BTC (Bitcoin)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Stock</label>
+                    <input type="number" id="pStock" step="1" min="0" value="10" required>
+                </div>
+
+                <div>
+                    <label>Image (URL)</label>
+                    <input type="text" id="pImage" placeholder="/images/mc-market-logo.png">
+                </div>
+
+                <div>
+                    <label>Statut</label>
+                    <select id="pActive">
+                        <option value="1">En vente</option>
+                        <option value="0">Retiré</option>
+                    </select>
+                </div>
+
+                <div class="full">
+                    <label>Description</label>
+                    <textarea id="pDesc" maxlength="500"></textarea>
+                </div>
+
+                <div class="full">
+                    <button type="submit" class="mc-button gold">
+                        Enregistrer
+                    </button>
+
+                    <button
+                        type="button"
+                        class="mc-button"
+                        id="cancelEdit"
+                        style="display:none; margin-left:8px;"
+                        onclick="resetForm()"
+                    >
+                        Annuler
+                    </button>
+                </div>
+
+            </form>
+
+            <p id="adminMessage" class="mc-message"></p>
+
+        </section>
+
+        <!-- LISTE DES ARTICLES -->
+
+        <section class="admin-section mc-panel">
+
+            <h2>Articles en vente</h2>
+
+            <table class="admin-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Stock</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productsTableBody">
+                    <tr><td colspan="6">Chargement...</td></tr>
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <!-- COMMANDES -->
+
+        <section class="admin-section mc-panel">
+
+            <h2>Commandes</h2>
+
+            <table class="admin-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Client</th>
+                        <th>Article</th>
+                        <th>Qté</th>
+                        <th>Total</th>
+                        <th>Paiement</th>
+                        <th>Livraison</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody id="ordersTableBody">
+                    <tr><td colspan="8">Chargement...</td></tr>
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+    <script src="/js/matrix.js"></script>
+    <script src="/js/admin.js"></script>
+
+</body>
+
+</html>

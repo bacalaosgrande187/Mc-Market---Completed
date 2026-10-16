@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Boutique - Mc Market</title>
+
+    <link rel="icon" type="image/png" href="/images/mc-market-logo.png">
+    <link rel="stylesheet" href="/css/market.css">
+</head>
+
+<body>
+
+    <header class="mc-header">
+
+        <div class="mc-header-brand">
+
+            <img
+                class="mc-header-logo"
+                src="/images/mc-market-logo.png"
+                alt="Mc Market"
+            >
+
+            <h1 class="mc-header-title">MC <span>MARKET</span></h1>
+
+        </div>
+
+        <nav class="mc-nav">
+
+            <a href="/market.html" class="active">Boutique</a>
+            <a href="/wallet/wallet.html">Wallet</a>
+            <a href="/admin.html" id="adminLink" style="display:none;">Admin</a>
+            <a href="#" id="logoutBtn">Déconnexion</a>
+
+            <!-- ICONE PANIER -->
+
+            <button
+                type="button"
+                id="cartBtn"
+                class="mc-cart-btn"
+                aria-label="Ouvrir le panier"
+                title="Mon panier"
+            >
+
+                <svg
+                    class="mc-cart-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M3 4h2.2l2.2 10.2a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.55L20.5 8H6.2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    <circle
+                        cx="10"
+                        cy="20"
+                        r="1.5"
+                        fill="currentColor"
+                    />
+                    <circle
+                        cx="17.5"
+                        cy="20"
+                        r="1.5"
+                        fill="currentColor"
+                    />
+                </svg>
+
+                <span>Panier</span>
+
+                <span class="mc-cart-count" id="cartCount">0</span>
+
+            </button>
+
+        </nav>
+
+    </header>
+
+    <main class="market-main">
+
+        <section class="market-banner mc-panel">
+
+            <img
+                src="/images/mc-market-logo.png"
+                alt="Mc Market"
+            >
+
+            <div>
+
+                <h1>Bienvenue au Mc Market</h1>
+
+                <p>
+                    Achetez les articles en vente directement avec les fonds
+                    de votre wallet crypto. Vos balances sont chargées en temps réel.
+                </p>
+
+            </div>
+
+        </section>
+
+        <section class="wallet-strip" id="walletStrip">
+
+            <span class="balance-chip">Chargement des balances...</span>
+
+        </section>
+
+        <section class="products-grid" id="productsGrid">
+
+            <span>Chargement des articles...</span>
+
+        </section>
+
+        <p id="marketMessage" class="mc-message"></p>
+
+    </main>
+
+    <!-- ================================================= -->
+    <!-- MODALE D'ACHAT                                    -->
+    <!-- ================================================= -->
+
+    <div id="buyModal" class="modal">
+
+        <div class="modal-content">
+
+            <button
+                class="close"
+                onclick="closeBuyModal()"
+            >
+                ×
+            </button>
+
+            <h2>Acheter</h2>
+
+            <p id="buyProductName" style="color:#fff; font-weight:700;"></p>
+
+            <label for="buyQuantity">Quantité</label>
+
+            <input
+                type="number"
+                id="buyQuantity"
+                min="1"
+                step="1"
+                value="1"
+            >
+
+            <label for="buyNetwork">Payer avec</label>
+
+            <select id="buyNetwork">
+
+                <option value="ethereum">Ethereum (ETH)</option>
+                <option value="bitcoin">Bitcoin (BTC)</option>
+
+            </select>
+
+            <label for="buyDelivery">Adresse de livraison</label>
+
+            <textarea
+                id="buyDelivery"
+                rows="3"
+                maxlength="500"
+                placeholder="Numéro, rue, code postal, ville, pays"
+            ></textarea>
+
+            <p class="modal-hint">
+                Cette adresse sera transmise avec la commande
+                pour l'expédition.
+            </p>
+
+            <p class="modal-total">
+                Total : <b id="buyTotal">-</b>
+            </p>
+
+            <button
+                class="mc-button gold"
+                style="width:100%;"
+                onclick="confirmPurchase()"
+            >
+                Payer avec mon wallet
+            </button>
+
+            <p id="buyMessage" class="mc-message"></p>
+
+        </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- PANNEAU PANIER                                    -->
+    <!-- ================================================= -->
+
+    <div
+        id="cartPanel"
+        class="cart-panel mc-panel"
+        aria-hidden="true"
+    >
+
+        <div class="cart-panel-head">
+
+            <h2>Mon panier</h2>
+
+            <button
+                type="button"
+                class="close"
+                aria-label="Fermer le panier"
+                onclick="closeCartPanel()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="cart-items" id="cartItems">
+
+            <p class="cart-empty">Votre panier est vide.</p>
+
+        </div>
+
+        <div class="cart-footer">
+
+            <div class="cart-totals" id="cartTotals">
+
+                <span class="cart-total-line">
+                    Sous-total : <b>0</b>
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                class="mc-button gold cart-pay"
+                id="cartPayBtn"
+                onclick="openCheckout()"
+                disabled
+            >
+                Payer
+            </button>
+
+            <button
+                type="button"
+                class="mc-button danger cart-clear"
+                id="cartClearBtn"
+                onclick="clearCart()"
+                disabled
+            >
+                Vider le panier
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- MODALE DE PAIEMENT DU PANIER                      -->
+    <!-- ================================================= -->
+
+    <div id="checkoutModal" class="modal">
+
+        <div class="modal-content">
+
+            <button
+                class="close"
+                onclick="closeCheckout()"
+            >
+                ×
+            </button>
+
+            <h2>Payer mon panier</h2>
+
+            <div
+                class="checkout-summary"
+                id="checkoutSummary"
+            ></div>
+
+            <label for="checkoutDelivery">Adresse de livraison</label>
+
+            <textarea
+                id="checkoutDelivery"
+                rows="3"
+                maxlength="500"
+                placeholder="Numéro, rue, code postal, ville, pays"
+            ></textarea>
+
+            <p class="modal-hint">
+                Une seule adresse pour toute la commande.
+                Le paiement est envoyé depuis votre wallet,
+                article par article si le panier mélange
+                plusieurs devises.
+            </p>
+
+            <p class="modal-total">
+                Sous-total : <b id="checkoutTotal">-</b>
+            </p>
+
+            <button
+                class="mc-button gold"
+                style="width:100%;"
+                onclick="confirmCheckout()"
+            >
+                Payer avec mon wallet
+            </button>
+
+            <p id="checkoutMessage" class="mc-message"></p>
+
+        </div>
+
+    </div>
+
+    <script src="/js/matrix.js"></script>
+    <script src="/js/market.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Créer un compte - Mc Market</title>
+
+    <link rel="icon" type="image/png" href="/images/mc-market-logo.png">
+    <link rel="stylesheet" href="/css/market.css">
+</head>
+
+<body>
+
+    <main class="mc-home">
+
+        <div class="mc-auth-card">
+
+            <img
+                src="/images/mc-market-logo.png"
+                alt="Logo Mc Market"
+            >
+
+            <h1>MC MARKET</h1>
+            <p class="subtitle">Créez votre nouveau compte</p>
+
+            <form id="registerForm">
+
+                <div class="input-group">
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Votre username"
+                        minlength="3"
+                        maxlength="30"
+                        required
+                    >
+                </div>
+
+
+                <div class="input-group">
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+                </div>
+
+
+                <div class="input-group">
+                    <label for="password">
+                        Mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Minimum 8 caractères"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+
+                <div class="input-group">
+                    <label for="confirmPassword">
+                        Confirmer le mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Retapez votre mot de passe"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="mc-auth-button">
+                    Créer le compte
+                </button>
+
+
+                <p id="message" class="mc-message"></p>
+
+            </form>
+
+
+            <div class="mc-switch">
+
+                Déjà un compte ?
+
+                <a href="/login.html">
+                    Se connecter
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="/js/matrix.js"></script>
+    <script src="/js/register.js"></script>
+
+</body>
+
+</html>
